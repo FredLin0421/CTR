@@ -39,14 +39,17 @@ class Paraboloid(om.ExplicitComponent):
         kappa = inputs['kappa']
         kb = inputs['kb']
         l22 = inputs['l22']
+        def F_kinematics(inputs):
+           ptip = np.linalg.norm(length[0]*(cos((length[1]*(kappa[0]*kb[0] + kappa[1]*kb[1] + kappa[2]*kb[2]))/(kb[0] + kb[1] + kb[2]))*sin(((l22 - length[1])*(kappa[0]*kb[0] + kappa[1]*kb[1]))/(kb[0] + kb[1])) 
+            + sin((length[1]*(kappa[0]*kb[0] + kappa[1]*kb[1] + kappa[2]*kb[2]))/(kb[0] + kb[1] + kb[2]))*cos(((l22 - length[1])*(kappa[0]*kb[0] + kappa[1]*kb[1]))/(kb[0] + kb[1]))) 
+            - ((cos((length[1]*(kappa[0]*kb[0] + kappa[1]*kb[1] + kappa[2]*kb[2]))/(kb[0] + kb[1] + kb[2])) - 1)*(kb[0] + kb[1] + kb[2]))/(kappa[0]*kb[0] + kappa[1]*kb[1] + kappa[2]*kb[2]) - 
+            (cos((length[1]*(kappa[0]*kb[0] + kappa[1]*kb[1] + kappa[2]*kb[2]))/(kb[0] + kb[1] + kb[2]))*(cos(((l22 - length[1])*(kappa[0]*kb[0] + kappa[1]*kb[1]))/(kb[0] + kb[1])) - 1)*(kb[0] + kb[1]))/(kappa[0]*kb[0] + kappa[1]*kb[1]) 
+            + (sin((length[1]*(kappa[0]*kb[0] + kappa[1]*kb[1] + kappa[2]*kb[2]))/(kb[0] + kb[1] + kb[2]))*sin(((l22 - length[1])*(kappa[0]*kb[0] + kappa[1]*kb[1]))/(kb[0] + kb[1]))*(kb[0] + kb[1]))/(kappa[0]*kb[0] + kappa[1]*kb[1]))
+           return ptip
         
-        outputs['f_xy'] = np.linalg.norm(length[0]*(cos((length[1]*(kappa[0]*kb[0] + kappa[1]*kb[1] + kappa[2]*kb[2]))/(kb[0] + kb[1] + kb[2]))*sin(((l22 - length[1])*(kappa[0]*kb[0] + kappa[1]*kb[1]))/(kb[0] + kb[1])) 
-         + sin((length[1]*(kappa[0]*kb[0] + kappa[1]*kb[1] + kappa[2]*kb[2]))/(kb[0] + kb[1] + kb[2]))*cos(((l22 - length[1])*(kappa[0]*kb[0] + kappa[1]*kb[1]))/(kb[0] + kb[1]))) 
-         - ((cos((length[1]*(kappa[0]*kb[0] + kappa[1]*kb[1] + kappa[2]*kb[2]))/(kb[0] + kb[1] + kb[2])) - 1)*(kb[0] + kb[1] + kb[2]))/(kappa[0]*kb[0] + kappa[1]*kb[1] + kappa[2]*kb[2]) - 
-         (cos((length[1]*(kappa[0]*kb[0] + kappa[1]*kb[1] + kappa[2]*kb[2]))/(kb[0] + kb[1] + kb[2]))*(cos(((l22 - length[1])*(kappa[0]*kb[0] + kappa[1]*kb[1]))/(kb[0] + kb[1])) - 1)*(kb[0] + kb[1]))/(kappa[0]*kb[0] + kappa[1]*kb[1]) 
-         + (sin((length[1]*(kappa[0]*kb[0] + kappa[1]*kb[1] + kappa[2]*kb[2]))/(kb[0] + kb[1] + kb[2]))*sin(((l22 - length[1])*(kappa[0]*kb[0] + kappa[1]*kb[1]))/(kb[0] + kb[1]))*(kb[0] + kb[1]))/(kappa[0]*kb[0] + kappa[1]*kb[1]) - 25)
+        outputs['f_xy'] = np.linalg.norm(F_kinematics(inputs)-25)
         
-        "'outputs['f_xy'] = (x-3.0)**2 + x*y + (y+4.0)**2 - 3.0'"
+        # "'outputs['f_xy'] = (x-3.0)**2 + x*y + (y+4.0)**2 - 3.0'"
 
 
 if __name__ == "__main__":
