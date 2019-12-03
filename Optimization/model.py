@@ -31,7 +31,9 @@ class Paraboloid(om.ExplicitComponent):
         self.add_input('kb2', val=0.0)
         self.add_input('kb3', val=0.0)
         self.add_input('l22', val=0.0)
+        self.add_input('psi2',val=0.0)
         self.add_output('f_xy', val=0.0)
+        
 
         # Finite difference all partials.
         self.declare_partials('*', '*', method='fd')
@@ -53,12 +55,18 @@ class Paraboloid(om.ExplicitComponent):
         kb2 = inputs['kb2']
         kb3 = inputs['kb3']
         l22 = inputs['l22']
+        psi2 = inputs['psi2']
+        
+        point1 = [30,5,30]
+        point2 = [20,3,20]
         def F_kinematics_x(inputs):
           
-           ptip_x =length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) + sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2))) - ((cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) - (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2)
-
-           return ptip_x
-        def F_kinematics_z(inputs):
+           ptip = [ length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos(psi2)*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) + sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*cos(psi2)) - (cos(psi2)*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2) - (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos(psi2)*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos(psi2)*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2)
+                       , length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*sin(psi2) + sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*sin(psi2)) - (sin(psi2)*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2) - (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin(psi2)*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*sin(psi2)*(kb1 + kb2))/(kappa2*kb2)
+                       , length4 + length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2) + (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2)]
+           
+           return ptip
+        """def F_kinematics_z(inputs):
            
            ptip_z = length4 + length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2) + (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2)
 
@@ -71,9 +79,8 @@ class Paraboloid(om.ExplicitComponent):
             return ptip
         def F_b3(inputs):
             ptip = [ (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) - ((cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2) - (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2),0, length4 + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2) + (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2)]
-            return ptip
-        #outputs['f_xy'] = np.linalg.norm(F_kinematics_x(inputs)-30+ F_kinematics_z(inputs)-30)
-        outputs['f_xy'] = 
+            return ptip"""
+        outputs['f_xy'] = np.linalg.norm(np.subtract(F_kinematics_x(inputs),point1))+np.linalg.norm(np.subtract(F_kinematics_x(inputs),point2))
         
         # "'outputs['f_xy'] = (x-3.0)**2 + x*y + (y+4.0)**2 - 3.0'"
 
@@ -92,6 +99,7 @@ if __name__ == "__main__":
     ivc.add_output('kb2', 1.0)
     ivc.add_output('kb3', 1.0)
     ivc.add_output('l22', 1.0 )
+    ivc.add_output('psi2', 1.0)
     model.add_subsystem('des_vars', ivc)
     model.add_subsystem('parab_comp', Paraboloid())
 
@@ -104,6 +112,7 @@ if __name__ == "__main__":
     model.connect('des_vars.kb2', 'parab_comp.kb2')
     model.connect('des_vars.kb3', 'parab_comp.kb3')
     model.connect('des_vars.l22', 'parab_comp.l22')
+    model.connect('des_vars.psi2', 'parab_comp.psi2')
  
 
     prob = om.Problem(model)

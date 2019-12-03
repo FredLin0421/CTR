@@ -27,26 +27,35 @@ indeps.add_output('kb1', 1)
 indeps.add_output('kb2', 1)
 indeps.add_output('kb3', 1)
 indeps.add_output('l22', 1)
+indeps.add_output('psi2', 1)
+
 
 prob.model.add_subsystem('parab', Paraboloid())
 
 # define the component whose output will be constrained
-prob.model.add_subsystem('const1', om.ExecComp('g =length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) + sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2))) - ((cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) - (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2)'))
-prob.model.add_subsystem('const2', om.ExecComp('g =  length4 + length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2) + (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2)'))
-prob.model.add_subsystem('const3', om.ExecComp('g = l22 - length3'))
-'''prob.model.connect('indeps.x', ['parab.x', 'const.x'])
-prob.model.connect('indeps.y', ['parab.y', 'const.y'])'''
+prob.model.add_subsystem('const1', om.ExecComp('x = length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos(psi2)*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) + sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*cos(psi2)) - (cos(psi2)*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2) - (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos(psi2)*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos(psi2)*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2)'))
+prob.model.add_subsystem('const2', om.ExecComp('y = length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*sin(psi2) + sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*sin(psi2)) - (sin(psi2)*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2) - (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin(psi2)*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*sin(psi2)*(kb1 + kb2))/(kappa2*kb2)'))
+prob.model.add_subsystem('const3', om.ExecComp('z = length4 + length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2) + (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2)'))
+prob.model.add_subsystem('const4', om.ExecComp('g = l22 - length3'))
+prob.model.add_subsystem('const5', om.ExecComp('k=kb3-kb2'))
+prob.model.add_subsystem('const6', om.ExecComp('k2=kb2-kb1'))
+prob.model.add_subsystem('const7', om.ExecComp('l23=l22-length3-length3'))
 
-prob.model.connect('indeps.l22', ['parab.l22','const1.l22','const2.l22','const3.l22'])
-prob.model.connect('indeps.length1', ['parab.length1','const1.length1','const2.length1'])
-prob.model.connect('indeps.length3', ['parab.length3','const1.length3','const2.length3','const3.length3'])
-prob.model.connect('indeps.length4', ['parab.length4','const2.length4'])
+
+
+
+prob.model.connect('indeps.l22', ['parab.l22','const1.l22','const2.l22','const3.l22','const4.l22','const7.l22'])
+prob.model.connect('indeps.length1', ['parab.length1','const1.length1','const2.length1','const3.length1'])
+prob.model.connect('indeps.length3', ['parab.length3','const1.length3','const2.length3','const3.length3','const4.length3','const7.length3'])
+prob.model.connect('indeps.length4', ['parab.length4','const3.length4'])
 """prob.model.connect('indeps.kappa1', ['parab.kappa1','const1.kappa1','const2.kappa1'])"""
-prob.model.connect('indeps.kappa2', ['parab.kappa2','const1.kappa2','const2.kappa2'])
+prob.model.connect('indeps.kappa2', ['parab.kappa2','const1.kappa2','const2.kappa2','const3.kappa2'])
 """prob.model.connect('indeps.kappa3', ['parab.kappa3','const1.kappa3','const2.kappa3'])"""
-prob.model.connect('indeps.kb1', ['parab.kb1','const1.kb1','const2.kb1'])
-prob.model.connect('indeps.kb2', ['parab.kb2','const1.kb2','const2.kb2'])
-prob.model.connect('indeps.kb3', ['parab.kb3','const1.kb3','const2.kb3'])
+prob.model.connect('indeps.kb1', ['parab.kb1','const1.kb1','const2.kb1','const3.kb1','const6.kb1'])
+prob.model.connect('indeps.kb2', ['parab.kb2','const1.kb2','const2.kb2','const3.kb2','const5.kb2','const6.kb2'])
+prob.model.connect('indeps.kb3', ['parab.kb3','const1.kb3','const2.kb3','const3.kb3','const5.kb3'])
+prob.model.connect('indeps.psi2', ['parab.psi2','const1.psi2','const2.psi2'])
+
 
 # setup the optimization
 prob.driver = om.ScipyOptimizeDriver()
@@ -63,6 +72,8 @@ prob.model.add_design_var('indeps.kb1', lower=1, upper=50)
 prob.model.add_design_var('indeps.kb2', lower=1, upper=50)
 prob.model.add_design_var('indeps.kb3', lower=1, upper=50)
 prob.model.add_design_var('indeps.l22', lower=1, upper=50)
+prob.model.add_design_var('indeps.psi2', lower=0)
+
 prob.model.add_objective('parab.f_xy')
 
 
@@ -70,11 +81,15 @@ prob.model.add_objective('parab.f_xy')
 
 # to add the constraint to the model
 """
-prob.model.add_constraint('const1.g', lower=29.5, upper=30.0)
-prob.model.add_constraint('const2.g', lower=29.5, upper=30.0)"""
-prob.model.add_constraint('const1.g', equals=30)
-prob.model.add_constraint('const2.g', equals=30)
-prob.model.add_constraint('const3.g', lower=0)
+prob.model.add_constraint('const1.x', lower=29.5, upper=30.0)
+prob.model.add_constraint('const2.y', lower=29.5, upper=30.0)"""
+prob.model.add_constraint('const1.x', equals=[30,20])
+prob.model.add_constraint('const2.y', equals=[5,3])
+prob.model.add_constraint('const3.z', equals=[30,20])
+prob.model.add_constraint('const4.g', lower=0)
+prob.model.add_constraint('const5.k', lower=0)
+prob.model.add_constraint('const6.k2', lower=0)
+prob.model.add_constraint('const7.l23', lower=0)
 prob.setup()
 prob.run_driver()
 
@@ -93,4 +108,5 @@ print('kb1 = ',prob['indeps.kb1'])
 print('kb2 = ',prob['indeps.kb2'])
 print('kb3 = ',prob['indeps.kb3'])
 print('l22 = ',prob['indeps.l22'])
+print('psi2 = ',prob['indeps.psi2'])
 
