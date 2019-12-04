@@ -16,30 +16,31 @@ prob = om.Problem()
 indeps = prob.model.add_subsystem('indeps', om.IndepVarComp())
 """indeps.add_output('x', 3.0)
 indeps.add_output('y', -4.0)"""
-indeps.add_output('length1', 1)
+indeps.add_output('length1', np.ones(10))
 """ivc.add_output('length2', 1.0)"""
-indeps.add_output('length3', 1)
-indeps.add_output('length4', 1)
+indeps.add_output('length3', np.ones(10))
+indeps.add_output('length4', np.ones(10))
 """indeps.add_output('kappa1', 1)"""
 indeps.add_output('kappa2', 1)
 """indeps.add_output('kappa3', 1)"""
 indeps.add_output('kb1', 1)
 indeps.add_output('kb2', 1)
 indeps.add_output('kb3', 1)
-indeps.add_output('l22', 1)
-indeps.add_output('psi2', 1)
+indeps.add_output('l22', np.ones(10))
+indeps.add_output('psi2', np.ones(10))
 
 
 prob.model.add_subsystem('parab', Paraboloid())
 
 # define the component whose output will be constrained
-prob.model.add_subsystem('const1', om.ExecComp('x = length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos(psi2)*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) + sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*cos(psi2)) - (cos(psi2)*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2) - (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos(psi2)*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos(psi2)*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2)'))
-prob.model.add_subsystem('const2', om.ExecComp('y = length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*sin(psi2) + sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*sin(psi2)) - (sin(psi2)*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2) - (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin(psi2)*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*sin(psi2)*(kb1 + kb2))/(kappa2*kb2)'))
-prob.model.add_subsystem('const3', om.ExecComp('z = length4 + length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2) + (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2)'))
-prob.model.add_subsystem('const4', om.ExecComp('g = l22 - length3'))
+#prob.model.add_subsystem('C1', om.ExecComp('y=sum(l22)*2.0', x=np.zeros(10)))
+prob.model.add_subsystem('const1', om.ExecComp('x = length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos(psi2)*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) + sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*cos(psi2)) - (cos(psi2)*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2) - (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos(psi2)*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos(psi2)*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2)',x=np.zeros(10),l22=np.zeros(10),length3=np.zeros(10),length1=np.zeros(10),psi2=np.zeros(10)))
+prob.model.add_subsystem('const2', om.ExecComp('y = length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*sin(psi2) + sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*sin(psi2)) - (sin(psi2)*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2) - (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin(psi2)*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*sin(psi2)*(kb1 + kb2))/(kappa2*kb2)',y=np.zeros(10),l22=np.zeros(10),length3=np.zeros(10),length1=np.zeros(10),psi2=np.zeros(10)))
+prob.model.add_subsystem('const3', om.ExecComp('z = length4 + length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2) + (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2)',z=np.zeros(10),l22=np.zeros(10),length4=np.zeros(10),length1=np.zeros(10),length3=np.zeros(10)))
+prob.model.add_subsystem('const4', om.ExecComp('g=l22-length3', g=np.zeros(10),l22=np.zeros(10),length3=np.zeros(10)))
 prob.model.add_subsystem('const5', om.ExecComp('k=kb3-kb2'))
 prob.model.add_subsystem('const6', om.ExecComp('k2=kb2-kb1'))
-prob.model.add_subsystem('const7', om.ExecComp('l23=l22-length3-length3'))
+prob.model.add_subsystem('const7', om.ExecComp('l23=l22-length3-length3',l23=np.zeros(10),l22=np.zeros(10),length3=np.zeros(10)))
 
 
 
@@ -83,9 +84,9 @@ prob.model.add_objective('parab.f_xy')
 """
 prob.model.add_constraint('const1.x', lower=29.5, upper=30.0)
 prob.model.add_constraint('const2.y', lower=29.5, upper=30.0)"""
-prob.model.add_constraint('const1.x', equals=[30,20])
-prob.model.add_constraint('const2.y', equals=[5,3])
-prob.model.add_constraint('const3.z', equals=[30,20])
+prob.model.add_constraint('const1.x', equals=[30,20,25,22,23,24,35,28,21,26])
+prob.model.add_constraint('const2.y', equals=[5,3,4,6,7,8,9,10,0,1])
+prob.model.add_constraint('const3.z', equals=[30,20,21,22,25,32,37,31,29,24])
 prob.model.add_constraint('const4.g', lower=0)
 prob.model.add_constraint('const5.k', lower=0)
 prob.model.add_constraint('const6.k2', lower=0)

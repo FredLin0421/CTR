@@ -20,18 +20,18 @@ class Paraboloid(om.ExplicitComponent):
     """
 
     def setup(self):
-        self.add_input('length1', val=0.0)
-        self.add_input('length2', val=0.0)
-        self.add_input('length3', val=0.0)
-        self.add_input('length4', val=0.0)
+        self.add_input('length1', val=np.zeros(10))
+        self.add_input('length2', val=np.zeros(10))
+        self.add_input('length3', val=np.zeros(10))
+        self.add_input('length4', val=np.zeros(10))
         """self.add_input('kappa1', val=0.0)"""
         self.add_input('kappa2', val=0.0)
         """self.add_input('kappa3', val=0.0)"""
         self.add_input('kb1', val=0.0)
         self.add_input('kb2', val=0.0)
         self.add_input('kb3', val=0.0)
-        self.add_input('l22', val=0.0)
-        self.add_input('psi2',val=0.0)
+        self.add_input('l22', val=np.zeros(10))
+        self.add_input('psi2',val=np.zeros(10))
         self.add_output('f_xy', val=0.0)
         
 
@@ -57,14 +57,15 @@ class Paraboloid(om.ExplicitComponent):
         l22 = inputs['l22']
         psi2 = inputs['psi2']
         
-        point1 = [30,5,30]
-        point2 = [20,3,20]
+        xx = [30,20,25,22,23,24,35,28,21,26]
+        yy = [5,3,4,6,7,8,9,10,0,1]
+        zz = [30,20,21,22,25,32,37,31,29,24]
+        pp = [xx,yy,zz]
         def F_kinematics_x(inputs):
           
-           ptip = [ length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos(psi2)*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) + sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*cos(psi2)) - (cos(psi2)*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2) - (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos(psi2)*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos(psi2)*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2)
-                       , length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*sin(psi2) + sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*sin(psi2)) - (sin(psi2)*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2) - (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin(psi2)*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*sin(psi2)*(kb1 + kb2))/(kappa2*kb2)
-                       , length4 + length1*(cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2) + (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2)]
-           
+           ptip = [[length1*(np.cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*np.cos(psi2)*np.sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) + np.sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*np.cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*np.cos(psi2)) - (np.cos(psi2)*(np.cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2) - (np.cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*np.cos(psi2)*(np.cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) + (np.sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*np.cos(psi2)*np.sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2)]
+                      , [length1*(np.cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*np.sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*np.sin(psi2) + np.sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*np.cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*np.sin(psi2)) - (np.sin(psi2)*(np.cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2) - (np.cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*np.sin(psi2)*(np.cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) + (np.sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*np.sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*np.sin(psi2)*(kb1 + kb2))/(kappa2*kb2)]
+                       , [length4 + length1*(np.cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*np.cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - np.sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*np.sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))) + (np.sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2) + (np.cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*np.sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) + (np.sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(np.cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2)]]
            return ptip
         """def F_kinematics_z(inputs):
            
@@ -80,7 +81,7 @@ class Paraboloid(om.ExplicitComponent):
         def F_b3(inputs):
             ptip = [ (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) - ((cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2) - (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2),0, length4 + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2) + (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2)]
             return ptip"""
-        outputs['f_xy'] = np.linalg.norm(np.subtract(F_kinematics_x(inputs),point1))+np.linalg.norm(np.subtract(F_kinematics_x(inputs),point2))
+        outputs['f_xy'] = np.linalg.norm(np.subtract(F_kinematics_x(inputs),pp))
         
         # "'outputs['f_xy'] = (x-3.0)**2 + x*y + (y+4.0)**2 - 3.0'"
 
@@ -89,17 +90,17 @@ if __name__ == "__main__":
 
     model = om.Group()
     ivc = om.IndepVarComp()
-    ivc.add_output('length1', 1.0)
+    ivc.add_output('length1', np.ones(10))
     """ivc.add_output('length2', 1.0)"""
-    ivc.add_output('length3', 1.0)
-    """ivc.add_output('kappa1', 1.0)"""
+    ivc.add_output('length3', np.ones(10))
+    """ivc.add_output('kappa1', np.ones(10))"""
     ivc.add_output('kappa2', 1.0)
     """ivc.add_output('kappa3', 1.0)"""
     ivc.add_output('kb1', 1.0)
     ivc.add_output('kb2', 1.0)
     ivc.add_output('kb3', 1.0)
-    ivc.add_output('l22', 1.0 )
-    ivc.add_output('psi2', 1.0)
+    ivc.add_output('l22', np.ones(10))
+    ivc.add_output('psi2', np.ones(10))
     model.add_subsystem('des_vars', ivc)
     model.add_subsystem('parab_comp', Paraboloid())
 
@@ -118,6 +119,7 @@ if __name__ == "__main__":
     prob = om.Problem(model)
     prob.setup()
     prob.run_model()
+    print((prob['parab_comp.length1']))
     print(prob['parab_comp.f_xy'])
 
     """prob['des_vars.x'] = 5.0
