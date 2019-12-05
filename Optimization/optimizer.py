@@ -40,14 +40,14 @@ prob.model.add_subsystem('const3', om.ExecComp('z = length4 + length1*(cos((kapp
 prob.model.add_subsystem('const4', om.ExecComp('g=l22-length3', g=np.zeros(10),l22=np.zeros(10),length3=np.zeros(10)))
 prob.model.add_subsystem('const5', om.ExecComp('k=kb3-kb2'))
 prob.model.add_subsystem('const6', om.ExecComp('k2=kb2-kb1'))
-prob.model.add_subsystem('const7', om.ExecComp('l23=l22-length3-length3',l23=np.zeros(10),l22=np.zeros(10),length3=np.zeros(10)))
+#prob.model.add_subsystem('const7', om.ExecComp('l23=l22-length3-length3',l23=np.zeros(10),l22=np.zeros(10),length3=np.zeros(10)))
 
 
 
 
-prob.model.connect('indeps.l22', ['parab.l22','const1.l22','const2.l22','const3.l22','const4.l22','const7.l22'])
+prob.model.connect('indeps.l22', ['parab.l22','const1.l22','const2.l22','const3.l22','const4.l22'])
 prob.model.connect('indeps.length1', ['parab.length1','const1.length1','const2.length1','const3.length1'])
-prob.model.connect('indeps.length3', ['parab.length3','const1.length3','const2.length3','const3.length3','const4.length3','const7.length3'])
+prob.model.connect('indeps.length3', ['parab.length3','const1.length3','const2.length3','const3.length3','const4.length3'])
 prob.model.connect('indeps.length4', ['parab.length4','const3.length4'])
 """prob.model.connect('indeps.kappa1', ['parab.kappa1','const1.kappa1','const2.kappa1'])"""
 prob.model.connect('indeps.kappa2', ['parab.kappa2','const1.kappa2','const2.kappa2','const3.kappa2'])
@@ -63,16 +63,16 @@ prob.driver = om.ScipyOptimizeDriver()
 prob.driver.options['optimizer'] = 'SLSQP'
 """prob.driver.options['maxiter'] = 500"""
 
-prob.model.add_design_var('indeps.length1', lower=1, upper=50)
-prob.model.add_design_var('indeps.length3', lower=1, upper=50)
-prob.model.add_design_var('indeps.length4', lower=1, upper=50)
+prob.model.add_design_var('indeps.length1', lower=1, upper=100)
+prob.model.add_design_var('indeps.length3', lower=1, upper=100)
+prob.model.add_design_var('indeps.length4', lower=1, upper=100)
 """prob.model.add_design_var('indeps.kappa1', lower=0, upper=10)"""
-prob.model.add_design_var('indeps.kappa2', lower=1, upper=50)
+prob.model.add_design_var('indeps.kappa2', lower=0, upper=0.5)
 """prob.model.add_design_var('indeps.kappa3', lower=0, upper=10)"""
-prob.model.add_design_var('indeps.kb1', lower=1, upper=50)
-prob.model.add_design_var('indeps.kb2', lower=1, upper=50)
+prob.model.add_design_var('indeps.kb1', lower=1, upper=25)
+prob.model.add_design_var('indeps.kb2', lower=1, upper=25)
 prob.model.add_design_var('indeps.kb3', lower=1, upper=50)
-prob.model.add_design_var('indeps.l22', lower=1, upper=50)
+prob.model.add_design_var('indeps.l22', lower=1, upper=100)
 prob.model.add_design_var('indeps.psi2', lower=0)
 
 prob.model.add_objective('parab.f_xy')
@@ -86,11 +86,11 @@ prob.model.add_constraint('const1.x', lower=29.5, upper=30.0)
 prob.model.add_constraint('const2.y', lower=29.5, upper=30.0)"""
 prob.model.add_constraint('const1.x', equals=[30,20,25,22,23,24,35,28,21,26])
 prob.model.add_constraint('const2.y', equals=[5,3,4,6,7,8,9,10,0,1])
-prob.model.add_constraint('const3.z', equals=[30,20,21,22,25,32,37,31,29,24])
+prob.model.add_constraint('const3.z', equals=[80,80,80,80,80,80,80,80,80,80])
 prob.model.add_constraint('const4.g', lower=0)
 prob.model.add_constraint('const5.k', lower=0)
 prob.model.add_constraint('const6.k2', lower=0)
-prob.model.add_constraint('const7.l23', lower=0)
+#prob.model.add_constraint('const7.l23', lower=0)
 prob.setup()
 prob.run_driver()
 
@@ -102,9 +102,7 @@ print('Length1 =',prob['indeps.length1'])
 print('Length2 =',prob['indeps.l22']-prob['indeps.length3'])
 print('Length3 =',prob['indeps.length3'])
 print('Length4 =',prob['indeps.length4'])
-print('kappa1 = [0]')
 print('kappa2 = ',prob['indeps.kappa2'])
-print('kappa3 = [0] ')
 print('kb1 = ',prob['indeps.kb1'])
 print('kb2 = ',prob['indeps.kb2'])
 print('kb3 = ',prob['indeps.kb3'])

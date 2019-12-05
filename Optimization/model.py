@@ -81,7 +81,14 @@ class Paraboloid(om.ExplicitComponent):
         def F_b3(inputs):
             ptip = [ (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) - ((cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2) - (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2),0, length4 + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2) + (cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) + (sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2)]
             return ptip"""
-        outputs['f_xy'] = np.linalg.norm(np.subtract(F_kinematics_x(inputs),pp))
+        def backbone(inputs):
+            
+            backbone_point = [[np.zeros(len(length4)),np.zeros(len(length4)),length4],[ -(np.cos(psi2)*(np.cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2), -(np.sin(psi2)*(np.cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2), length4 + (np.sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2)],
+                              [ (np.sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*np.cos(psi2)*np.sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) - (np.cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*np.cos(psi2)*(np.cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) - (np.cos(psi2)*(np.cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2), (np.sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*np.sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*np.sin(psi2)*(kb1 + kb2))/(kappa2*kb2) - (np.cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*np.sin(psi2)*(np.cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) - (np.sin(psi2)*(np.cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2), length4 + (np.sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2) + (np.cos((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*np.sin((kappa2*kb2*(l22 - length3))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) + (np.sin((kappa2*kb2*length3)/(kb1 + kb2 + kb3))*(np.cos((kappa2*kb2*(l22 - length3))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2)]]
+            
+            return backbone_point
+        #outputs['f_xy'] = np.linalg.norm(np.subtract(F_kinematics_x(inputs),pp))
+        outputs['f_xy'] = np.linalg.norm(backbone(inputs))
         
         # "'outputs['f_xy'] = (x-3.0)**2 + x*y + (y+4.0)**2 - 3.0'"
 
