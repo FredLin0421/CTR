@@ -60,6 +60,7 @@ prob.model.connect('indeps.psi2', ['parab.psi2','const1.psi2','const2.psi2'])
 
 # setup the optimization
 prob.driver = om.ScipyOptimizeDriver()
+prob.driver.options['maxiter'] = 400
 prob.driver.options['optimizer'] = 'SLSQP'
 """prob.driver.options['maxiter'] = 500"""
 
@@ -67,7 +68,7 @@ prob.model.add_design_var('indeps.length1', lower=1, upper=100)
 prob.model.add_design_var('indeps.length2', lower=1, upper=100)
 prob.model.add_design_var('indeps.length4', lower=1, upper=100)
 """prob.model.add_design_var('indeps.kappa1', lower=0, upper=10)"""
-prob.model.add_design_var('indeps.kappa2', lower=0, upper=0.5)
+prob.model.add_design_var('indeps.kappa2', lower=1, upper=50)
 """prob.model.add_design_var('indeps.kappa3', lower=0, upper=10)"""
 prob.model.add_design_var('indeps.kb1', lower=1, upper=25)
 prob.model.add_design_var('indeps.kb2', lower=1, upper=25)
@@ -84,10 +85,10 @@ prob.model.add_objective('parab.f_xy')
 """
 prob.model.add_constraint('const1.x', lower=29.5, upper=30.0)
 prob.model.add_constraint('const2.y', lower=29.5, upper=30.0)"""
-prob.model.add_constraint('const1.x', equals=[30,20,25,22,23,24,35,28,21,26])
-prob.model.add_constraint('const2.y', equals=[0,0,0,0,0,0,0,0,0,0])
+prob.model.add_constraint('const1.x', equals=[30,20,25,22,23,24,35,28,38,40])
+prob.model.add_constraint('const2.y', equals=[5,3,4,6,7,8,9,10,0,1])
 prob.model.add_constraint('const3.z', equals=[80,80,80,80,80,80,80,80,80,80])
-prob.model.add_constraint('const4.g', lower=0)
+prob.model.add_constraint('const4.g', lower=1)
 prob.model.add_constraint('const5.k', lower=0)
 prob.model.add_constraint('const6.k2', lower=0)
 #prob.model.add_constraint('const7.l23', lower=0)
