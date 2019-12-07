@@ -150,14 +150,14 @@ camdata = [[0;0;1],[0;1;0]];
 %% Generate and plot the surface
 
 dCvec_prev = [0;0;1];
-R = [0 0 1;0 1 0;-1 0 0];
-px=0;
-py=0;
-pz=60;
-Tr = [px;py;pz];
-C = R*C+Tr;
-plot3(C(1,:),C(2,:),C(3,:))
-disp(C)
+% R = [0 0 1;0 1 0;-1 0 0];
+% px=0;
+% py=0;
+% pz=60;
+% Tr = [px;py;pz];
+% C = R*C+Tr;
+% plot3(C(1,:),C(2,:),C(3,:))
+% disp(C)
 switch alg
     case 1
         %% Natural Looking Tube (default)
