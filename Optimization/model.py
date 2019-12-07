@@ -18,20 +18,21 @@ class Paraboloid(om.ExplicitComponent):
     """
     Evaluates the equation f(x,y) = (x-3)^2 + xy + (y+4)^2 - 3.
     """
-
+    
     def setup(self):
-        self.add_input('length1', val=np.zeros(10))
-        self.add_input('length2', val=np.zeros(10))
-        self.add_input('length3', val=np.zeros(10))
-        self.add_input('length4', val=np.zeros(10))
+        
+        self.add_input('length1', val=np.zeros(20))
+        self.add_input('length2', val=np.zeros(20))
+        self.add_input('length3', val=np.zeros(20))
+        self.add_input('length4', val=np.zeros(20))
         """self.add_input('kappa1', val=0.0)"""
         self.add_input('kappa2', val=0.0)
         """self.add_input('kappa3', val=0.0)"""
         self.add_input('kb1', val=0.0)
         self.add_input('kb2', val=0.0)
         self.add_input('kb3', val=0.0)
-        self.add_input('l22', val=np.zeros(10))
-        self.add_input('psi2',val=np.zeros(10))
+        self.add_input('l22', val=np.zeros(20))
+        self.add_input('psi2',val=np.zeros(20))
         self.add_output('f_xy', val=0.0)
         
 
@@ -87,9 +88,12 @@ class Paraboloid(om.ExplicitComponent):
             return ptip"""
         def backbone(inputs):
             
-            backbone_point = [[np.zeros(len(length4)),np.zeros(len(length4)),length4],[ -(np.cos(psi2)*(np.cos((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2), -(np.sin(psi2)*(np.cos((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2), length4 + (np.sin((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2)],
-                              [ (np.sin((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3))*np.cos(psi2)*np.sin((kappa2*kb2*(length2))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) - (np.cos((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3))*np.cos(psi2)*(np.cos((kappa2*kb2*(length2))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) - (np.cos(psi2)*(np.cos((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2), (np.sin((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3))*np.sin((kappa2*kb2*(length2))/(kb1 + kb2))*np.sin(psi2)*(kb1 + kb2))/(kappa2*kb2) - (np.cos((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3))*np.sin(psi2)*(np.cos((kappa2*kb2*(length2))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) - (np.sin(psi2)*(np.cos((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2), length4 + (np.sin((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2) + (np.cos((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3))*np.sin((kappa2*kb2*(length2))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) + (np.sin((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3))*(np.cos((kappa2*kb2*(length2))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2)]]
-            
+            backbone_point = [[np.zeros(len(length4)),np.zeros(len(length4)),length4],
+                                [ -(np.cos(psi2)*(np.cos((kappa2*kb2*(l22 - length2)/2)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2), -(np.sin(psi2)*(np.cos((kappa2*kb2*(l22 - length2)/2)/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2), length4 + (np.sin((kappa2*kb2*(l22 - length2)/2)/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2)],
+                                [-(np.cos(psi2)*(np.cos((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2), -(np.sin(psi2)*(np.cos((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2), length4 + (np.sin((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2)], 
+                                [(np.sin((kappa2*kb2*(l22 - length2/2))/(kb1 + kb2 + kb3))*np.cos(psi2)*np.sin((kappa2*kb2*(length2/2))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) - (np.cos((kappa2*kb2*(l22 - length2/2))/(kb1 + kb2 + kb3))*np.cos(psi2)*(np.cos((kappa2*kb2*(length2/2))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) - (np.cos(psi2)*(np.cos((kappa2*kb2*(l22 - length2/2))/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2), (np.sin((kappa2*kb2*(l22 - length2/2))/(kb1 + kb2 + kb3))*np.sin((kappa2*kb2*(length2/2))/(kb1 + kb2))*np.sin(psi2)*(kb1 + kb2))/(kappa2*kb2) - (np.cos((kappa2*kb2*(l22 - length2/2))/(kb1 + kb2 + kb3))*np.sin(psi2)*(np.cos((kappa2*kb2*(length2/2))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) - (np.sin(psi2)*(np.cos((kappa2*kb2*(l22 - length2/2))/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2), length4 + (np.sin((kappa2*kb2*(l22 - length2/2))/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2) + (np.cos((kappa2*kb2*(l22 - length2/2))/(kb1 + kb2 + kb3))*np.sin((kappa2*kb2*(length2/2))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) + (np.sin((kappa2*kb2*(l22 - length2/2))/(kb1 + kb2 + kb3))*(np.cos((kappa2*kb2*(length2/2))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2)],
+                                [(np.sin((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3))*np.cos(psi2)*np.sin((kappa2*kb2*(length2))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) - (np.cos((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3))*np.cos(psi2)*(np.cos((kappa2*kb2*(length2))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) - (np.cos(psi2)*(np.cos((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2), (np.sin((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3))*np.sin((kappa2*kb2*(length2))/(kb1 + kb2))*np.sin(psi2)*(kb1 + kb2))/(kappa2*kb2) - (np.cos((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3))*np.sin(psi2)*(np.cos((kappa2*kb2*(length2))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2) - (np.sin(psi2)*(np.cos((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3)) - 1)*(kb1 + kb2 + kb3))/(kappa2*kb2), length4 + (np.sin((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3))*(kb1 + kb2 + kb3))/(kappa2*kb2) + (np.cos((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3))*np.sin((kappa2*kb2*(length2))/(kb1 + kb2))*(kb1 + kb2))/(kappa2*kb2) + (np.sin((kappa2*kb2*(l22 - length2))/(kb1 + kb2 + kb3))*(np.cos((kappa2*kb2*(length2))/(kb1 + kb2)) - 1)*(kb1 + kb2))/(kappa2*kb2)],
+                                [np.zeros(len(length1)),np.zeros(len(length1)),(length1)/2]]
             return backbone_point
         #outputs['f_xy'] = np.linalg.norm(np.subtract(F_kinematics_x(inputs),pp))
         outputs['f_xy'] = np.linalg.norm(backbone(inputs))
@@ -98,11 +102,11 @@ class Paraboloid(om.ExplicitComponent):
 
 
 if __name__ == "__main__":
-
+    N = 20
     model = om.Group()
     ivc = om.IndepVarComp()
-    ivc.add_output('length1', np.ones(10))
-    ivc.add_output('length2', 1.0)
+    ivc.add_output('length1', np.ones(N))
+    ivc.add_output('length2', np.ones(N))
     """ivc.add_output('length3', np.ones(10))"""
     """ivc.add_output('kappa1', np.ones(10))"""
     ivc.add_output('kappa2', 1.0)
@@ -110,8 +114,8 @@ if __name__ == "__main__":
     ivc.add_output('kb1', 1.0)
     ivc.add_output('kb2', 1.0)
     ivc.add_output('kb3', 1.0)
-    ivc.add_output('l22', np.ones(10))
-    ivc.add_output('psi2', np.ones(10))
+    ivc.add_output('l22', np.ones(N))
+    ivc.add_output('psi2', np.ones(N))
     model.add_subsystem('des_vars', ivc)
     model.add_subsystem('parab_comp', Paraboloid())
 
