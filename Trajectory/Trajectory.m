@@ -63,18 +63,18 @@ fb = [-20 gb_grasping(end,2) 15];
 Pa = [ ga_needle; ga_path2loop; ga_spiralloop; ga_grasping; ga_knottying ];
 Pb = [ gb_needle; gb_path2loop; gb_spiralloop; gb_grasping; gb_knottying ];
 
-temp_a = Pa(:,1);
-Pa(:,1) = Pa(:,2);
-Pa(:,2) = temp_a;
+% temp_a = Pa(:,1);
+% Pa(:,1) = Pa(:,2);
+% Pa(:,2) = temp_a;
+% 
+% temp_b = Pb(:,1);
+% Pb(:,1) = Pb(:,2);
+% Pb(:,2) = temp_b;
+% 
+% Pa(:,1) = Pa(:,1);
+% Pb(:,1) = Pb(:,1);
 
-temp_b = Pb(:,1);
-Pb(:,1) = Pb(:,2);
-Pb(:,2) = temp_b;
-
-Pa(:,1) = Pa(:,1) + 80;
-Pb(:,1) = Pb(:,1) + 80;
-
-save('path','Pa','Pb');
+save path.mat Pa Pb -v7.3;
 dimension = size(Pa);
 
 for i=1:dimension(1)

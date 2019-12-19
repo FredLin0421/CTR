@@ -9,7 +9,7 @@ L2 = 6;                  % 10 mm, safety distance between two grippers at end of
 L3 = L1+L2+20;           % Suture length from suture exit point (on tissue) to
                          % stationary robot gripper.
 L = L1 + L2 + L3;
-N = 50;                 % Number of trajectory potins
+N = 25;                 % Number of trajectory potins
 r = zeros(1,N);  
 s = 5;                   % Gripper b stationary point while looping
 Pa_x = zeros(1,N);       % Coordinates (x,y) of wrapping trajectory.
@@ -19,7 +19,7 @@ Pb_x = zeros(1,N)+s;
 Pb_y = zeros(1,N);
 Pb_z = zeros(1,N);
 
-theta = 0.2;
+theta = 0.4;
 Oy = ga(2);                 % Coordinates (x,y) of stationary gripper.
 Oz = ga(3);
 h = 15;                 % looping height

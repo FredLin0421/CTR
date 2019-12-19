@@ -34,9 +34,13 @@ angle_eq = sym('angle_eq',[1 tube_nbr+1],'real');
 tube_flag = [1 1 1 1;   % tube 1
              1 1 1 0;   % tube 2
              1 1 0 0];  % tube 3
-tube_curv = [kappa(1) kappa(1) kappa(1) kappa(1);
+   
+tube_curv = [0 0 0 0;
              0 kappa(2) kappa(2) 0;
-             kappa(3) kappa(3) 0 0];
+            0 0 0 0];
+%  tube_curv = [kappa(1) kappa(1) kappa(1) kappa(1);
+%              0 kappa(2) kappa(2) 0;
+%              kappa(3) kappa(3) 0 0];
 curv_eq = sym(zeros(size(tube_flag,2),1));
 for i=1:size(tube_flag,2)
     curv_eq(i) = 1/sum(kb.*tube_flag(:,i)') * sum(kb.*tube_curv(:,i)'.*tube_flag(:,i)');
@@ -46,6 +50,9 @@ syms l22
 angle_eq = 0 
 length(2) = l22-length(3);
 curv_eq(1) = 0;
+
+
+
 
     T1= [1 0 0 0;
             0 1 0 0;

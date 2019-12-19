@@ -16,7 +16,7 @@ ang_start = (pi/2)- asin(c_rotat/dia_needle);
 ang_swept = pi-ang_start;
 ang= (3.14159 -ang_swept)/2;%this makes sure that the angle of the start and the end point is perpendicular to the surface
 %Number of points required
-theta = linspace (0 +ang, ang_swept+ang, 50);
+theta = linspace (0 +ang, ang_swept+ang, 16);
 %since the center of the circle is (0,0,6)
 
 for k= 1:length(theta)
@@ -37,7 +37,7 @@ for q = 1:length (theta)
 end
 
 %for the final position
-for r= 1:25
+for r= 1:8
     a = theta(k);
     x2(r) = x(r);
     y2(r) = 0;
